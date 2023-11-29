@@ -38,6 +38,11 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) :
     XOptions::adjustListWidget(ui->listWidgetMethods);
 
     ui->listWidgetMethods->blockSignals(false);
+
+    g_hexOptions = {};
+    ui->widgetHex->setContextMenuEnable(false);
+
+    ui->stackedWidgetOptions->hide();
 }
 
 XDataConvertorWidget::~XDataConvertorWidget()
@@ -70,10 +75,22 @@ void XDataConvertorWidget::showMethod(METHOD method)
 
         DATA _data = g_mapData.value(method);
 
-        if (_data.bValid) {
-            ui->stackedWidgetHex->setCurrentIndex(1);
+        if ((method == METHOD_NONE) || (_data.bValid)) {
+            ui->groupBoxHex->show();
         } else {
-            ui->stackedWidgetHex->setCurrentIndex(0);
+            ui->groupBoxHex->hide();
+        }
+
+        if (method == METHOD_NONE) {
+            ui->stackedWidgetOptions->hide();
+        } else {
+            ui->stackedWidgetOptions->show();
+        }
+
+        if (method == METHOD_NONE) {
+            ui->widgetHex->setData(g_pDevice, g_hexOptions, true);
+        } else if (method == METHOD_XOR) {
+            ui->stackedWidgetOptions->setCurrentWidget(ui->pageXOR);
         }
     }
 }

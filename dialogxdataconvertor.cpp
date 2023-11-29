@@ -26,6 +26,8 @@ DialogXDataConvertor::DialogXDataConvertor(QWidget *pParent) :
     ui(new Ui::DialogXDataConvertor)
 {
     ui->setupUi(this);
+
+    setWindowFlags(Qt::Window);
 }
 
 DialogXDataConvertor::~DialogXDataConvertor()

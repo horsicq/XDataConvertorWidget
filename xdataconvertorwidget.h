@@ -26,6 +26,7 @@
 
 #include "xbinary.h"
 #include "xoptions.h"
+#include "xhexview.h"
 
 namespace Ui {
 class XDataConvertorWidget;
@@ -63,6 +64,7 @@ private:
     Ui::XDataConvertorWidget *ui;
     METHOD g_currentMethod;
     QIODevice *g_pDevice;
+    XHexView::OPTIONS g_hexOptions;
     QMap<METHOD, DATA> g_mapData;
 };
 
