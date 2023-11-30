@@ -53,6 +53,8 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) :
         ui->comboBoxXORmethod->addItem("DWORD", SM_DWORD);
         ui->comboBoxXORmethod->addItem("QWORD", SM_QWORD);
 
+        ui->lineEditXORValue->setValidatorModeValue(XLineEditValidator::MODE_HEX_8, 0);
+
         ui->comboBoxXORmethod->blockSignals(false);
     }
 }
@@ -127,7 +129,17 @@ void XDataConvertorWidget::on_comboBoxXORmethod_currentIndexChanged(int nIndex)
 {
     Q_UNUSED(nIndex)
 
-    // TODO
+    SM sm = (SM)(ui->comboBoxXORmethod->currentData(Qt::UserRole).toUInt());
+
+    if (sm == SM_BYTE) {
+        ui->lineEditXORValue->setValidatorMode(XLineEditValidator::MODE_HEX_8);
+    } else if (sm == SM_WORD) {
+        ui->lineEditXORValue->setValidatorMode(XLineEditValidator::MODE_HEX_16);
+    } else if (sm == SM_DWORD) {
+        ui->lineEditXORValue->setValidatorMode(XLineEditValidator::MODE_HEX_32);
+    } else if (sm == SM_QWORD) {
+        ui->lineEditXORValue->setValidatorMode(XLineEditValidator::MODE_HEX_64);
+    }
 }
 
 void XDataConvertorWidget::on_pushButtonXOR_clicked()

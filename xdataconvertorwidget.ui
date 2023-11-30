@@ -103,7 +103,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit">
+            <widget class="XLineEditHEX" name="lineEditXORValue">
              <property name="minimumSize">
               <size>
                <width>120</width>
@@ -263,6 +263,11 @@
    <extends>QWidget</extends>
    <header>xhexview.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>XLineEditHEX</class>
+   <extends>QLineEdit</extends>
+   <header>xlineedithex.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
