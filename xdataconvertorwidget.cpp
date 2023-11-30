@@ -43,6 +43,18 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) :
     ui->widgetHex->setContextMenuEnable(false);
 
     ui->stackedWidgetOptions->hide();
+
+    // XOR
+    {
+        ui->comboBoxXORmethod->blockSignals(true);
+
+        ui->comboBoxXORmethod->addItem("BYTE", SM_BYTE);
+        ui->comboBoxXORmethod->addItem("WORD", SM_WORD);
+        ui->comboBoxXORmethod->addItem("DWORD", SM_DWORD);
+        ui->comboBoxXORmethod->addItem("QWORD", SM_QWORD);
+
+        ui->comboBoxXORmethod->blockSignals(false);
+    }
 }
 
 XDataConvertorWidget::~XDataConvertorWidget()
@@ -75,10 +87,12 @@ void XDataConvertorWidget::showMethod(METHOD method)
 
         DATA _data = g_mapData.value(method);
 
-        if ((method == METHOD_NONE) || (_data.bValid)) {
-            ui->groupBoxHex->show();
+        if (method == METHOD_NONE) {
+            ui->widgetHex->setData(g_pDevice, g_hexOptions, true);
+        } else if (_data.bValid) {
+            // TODO
         } else {
-            ui->groupBoxHex->hide();
+            ui->widgetHex->setDevice(nullptr);
         }
 
         if (method == METHOD_NONE) {
@@ -87,9 +101,7 @@ void XDataConvertorWidget::showMethod(METHOD method)
             ui->stackedWidgetOptions->show();
         }
 
-        if (method == METHOD_NONE) {
-            ui->widgetHex->setData(g_pDevice, g_hexOptions, true);
-        } else if (method == METHOD_XOR) {
+        if (method == METHOD_XOR) {
             ui->stackedWidgetOptions->setCurrentWidget(ui->pageXOR);
         }
     }
@@ -109,4 +121,16 @@ void XDataConvertorWidget::on_listWidgetMethods_currentItemChanged(QListWidgetIt
     METHOD method = (METHOD)(pCurrent->data(Qt::UserRole).toInt());
 
     showMethod(method);
+}
+
+void XDataConvertorWidget::on_comboBoxXORmethod_currentIndexChanged(int nIndex)
+{
+    Q_UNUSED(nIndex)
+
+    // TODO
+}
+
+void XDataConvertorWidget::on_pushButtonXOR_clicked()
+{
+    // TODO
 }
