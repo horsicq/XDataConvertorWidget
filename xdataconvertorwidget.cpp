@@ -109,6 +109,11 @@ void XDataConvertorWidget::showMethod(METHOD method)
     }
 }
 
+void XDataConvertorWidget::process(METHOD method)
+{
+    // TODO
+}
+
 void XDataConvertorWidget::on_listWidgetMethods_itemClicked(QListWidgetItem *pItem)
 {
     METHOD method = (METHOD)(pItem->data(Qt::UserRole).toInt());
@@ -143,6 +148,11 @@ void XDataConvertorWidget::on_comboBoxXORmethod_currentIndexChanged(int nIndex)
 }
 
 void XDataConvertorWidget::on_pushButtonXOR_clicked()
+{
+    process(METHOD_XOR);
+}
+
+void XDataConvertorWidget::on_pushButtonDump_clicked()
 {
     // TODO
 }

@@ -64,10 +64,12 @@ private slots:
     void on_listWidgetMethods_currentItemChanged(QListWidgetItem *pCurrent, QListWidgetItem *pPrevious);
     void on_comboBoxXORmethod_currentIndexChanged(int nIndex);
     void on_pushButtonXOR_clicked();
+    void on_pushButtonDump_clicked();
 
 private:
     void _addMethod(QString sName, METHOD method);
     void showMethod(METHOD method);
+    void process(METHOD method);
 
 private:
     Ui::XDataConvertorWidget *ui;
