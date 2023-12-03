@@ -32,8 +32,7 @@ namespace Ui {
 class XDataConvertorWidget;
 }
 
-class XDataConvertorWidget : public QWidget
-{
+class XDataConvertorWidget : public QWidget {
     Q_OBJECT
 
     enum METHOD {
@@ -79,4 +78,4 @@ private:
     QMap<METHOD, DATA> g_mapData;
 };
 
-#endif // XDATACONVERTORWIDGET_H
+#endif  // XDATACONVERTORWIDGET_H

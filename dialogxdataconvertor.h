@@ -27,8 +27,7 @@ namespace Ui {
 class DialogXDataConvertor;
 }
 
-class DialogXDataConvertor : public QDialog
-{
+class DialogXDataConvertor : public QDialog {
     Q_OBJECT
 
 public:
@@ -44,4 +43,4 @@ private:
     Ui::DialogXDataConvertor *ui;
 };
 
-#endif // DIALOGXDATACONVERTOR_H
+#endif  // DIALOGXDATACONVERTOR_H

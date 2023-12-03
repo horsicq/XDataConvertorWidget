@@ -21,9 +21,7 @@
 #include "xdataconvertorwidget.h"
 #include "ui_xdataconvertorwidget.h"
 
-XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) :
-    QWidget(pParent),
-    ui(new Ui::XDataConvertorWidget)
+XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent), ui(new Ui::XDataConvertorWidget)
 {
     ui->setupUi(this);
 

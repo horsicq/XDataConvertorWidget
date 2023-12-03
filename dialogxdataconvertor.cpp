@@ -21,9 +21,7 @@
 #include "dialogxdataconvertor.h"
 #include "ui_dialogxdataconvertor.h"
 
-DialogXDataConvertor::DialogXDataConvertor(QWidget *pParent) :
-    QDialog(pParent),
-    ui(new Ui::DialogXDataConvertor)
+DialogXDataConvertor::DialogXDataConvertor(QWidget *pParent) : QDialog(pParent), ui(new Ui::DialogXDataConvertor)
 {
     ui->setupUi(this);
 
@@ -44,4 +42,3 @@ void DialogXDataConvertor::on_pushButtonOK_clicked()
 {
     this->close();
 }
-
