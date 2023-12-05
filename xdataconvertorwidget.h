@@ -27,6 +27,7 @@
 #include "xbinary.h"
 #include "xoptions.h"
 #include "xhexview.h"
+#include "dialogxdataconvertorprocess.h"
 
 namespace Ui {
 class XDataConvertorWidget;
@@ -50,6 +51,7 @@ class XDataConvertorWidget : public QWidget {
 
     struct DATA {
         bool bValid;
+        QTemporaryFile *pTmpFile;
     };
 
 public:

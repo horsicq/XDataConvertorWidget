@@ -5,10 +5,12 @@ DEPENDPATH += $$PWD
 
 HEADERS += \
     $$PWD/dialogxdataconvertor.h \
+    $$PWD/dialogxdataconvertorprocess.h \
     $$PWD/xdataconvertorwidget.h
 
 SOURCES += \
     $$PWD/dialogxdataconvertor.cpp \
+    $$PWD/dialogxdataconvertorprocess.cpp \
     $$PWD/xdataconvertorwidget.cpp
 
 FORMS += \

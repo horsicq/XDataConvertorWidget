@@ -90,7 +90,7 @@ void XDataConvertorWidget::showMethod(METHOD method)
         if (method == METHOD_NONE) {
             ui->widgetHex->setData(g_pDevice, g_hexOptions, true);
         } else if (_data.bValid) {
-            // TODO
+            ui->widgetHex->setData(_data.pTmpFile, g_hexOptions, true);
         } else {
             ui->widgetHex->setDevice(nullptr);
         }
@@ -109,7 +109,14 @@ void XDataConvertorWidget::showMethod(METHOD method)
 
 void XDataConvertorWidget::process(METHOD method)
 {
-    // TODO
+    QTemporaryFile *pTmpFile = new QTemporaryFile;
+    if (pTmpFile->open()) {
+        // TODO
+        // file.fileName() returns the unique file name
+        DialogXDataConvertorProcess dcp(this);
+
+        dcp.showDialogDelay();
+    }
 }
 
 void XDataConvertorWidget::on_listWidgetMethods_itemClicked(QListWidgetItem *pItem)
