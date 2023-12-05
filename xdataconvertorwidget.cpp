@@ -152,5 +152,5 @@ void XDataConvertorWidget::on_pushButtonXOR_clicked()
 
 void XDataConvertorWidget::on_pushButtonDump_clicked()
 {
-    // TODO
+    ui->widgetHex->dumpMemory();
 }
