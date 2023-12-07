@@ -22,10 +22,30 @@
 
 DialogXDataConvertorProcess::DialogXDataConvertorProcess(QWidget *pParent) : XDialogProcess(pParent)
 {
+//    g_pDump = new DumpProcess;
+    g_pThread = new QThread;
 
+//    g_pDump->moveToThread(g_pThread);
+
+//    connect(g_pThread, SIGNAL(started()), g_pDump, SLOT(process()));
+//    connect(g_pDump, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+//    connect(g_pDump, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
+}
+
+DialogXDataConvertorProcess::~DialogXDataConvertorProcess()
+{
+    stop();
+    waitForFinished();
+
+    g_pThread->quit();
+    g_pThread->wait();
+
+    delete g_pThread;
+    //delete g_pDump;
 }
 
 void DialogXDataConvertorProcess::setData(QIODevice *pDeviceIn, QIODevice *pDeviceOut)
 {
-    // TODO
+//    g_pDump->setData(pDevice, listRecords, dumpType, getPdStruct());
+    g_pThread->start();
 }

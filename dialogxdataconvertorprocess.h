@@ -28,7 +28,12 @@ class DialogXDataConvertorProcess : public XDialogProcess
     Q_OBJECT
 public:
     explicit DialogXDataConvertorProcess(QWidget *pParent = nullptr);
+    ~DialogXDataConvertorProcess();
+
     void setData(QIODevice *pDeviceIn, QIODevice *pDeviceOut);
+
+private:
+    QThread *g_pThread;
 };
 
 #endif // DIALOGXDATACONVERTORPROCESS_H
