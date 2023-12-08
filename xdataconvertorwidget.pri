@@ -17,6 +17,11 @@ FORMS += \
     $$PWD/dialogxdataconvertor.ui \
     $$PWD/xdataconvertorwidget.ui
 
+!contains(XCONFIG, xdataconvertor) {
+    XCONFIG += xdataconvertor
+    include($$PWD/../Formats/xdataconvertor.pri)
+}
+
 DISTFILES += \
     $$PWD/LICENSE \
     $$PWD/README.md \

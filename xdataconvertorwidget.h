@@ -70,7 +70,7 @@ private slots:
 private:
     void _addMethod(QString sName, METHOD method);
     void showMethod(METHOD method);
-    void process(METHOD method);
+    void process(XDataConvertor::METHOD method, const XDataConvertor::OPTIONS &options);
 
 private:
     Ui::XDataConvertorWidget *ui;

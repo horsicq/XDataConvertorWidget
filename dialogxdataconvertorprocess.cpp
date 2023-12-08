@@ -22,14 +22,14 @@
 
 DialogXDataConvertorProcess::DialogXDataConvertorProcess(QWidget *pParent) : XDialogProcess(pParent)
 {
-//    g_pDump = new DumpProcess;
+    g_pDataConvertor = new XDataConvertor;
     g_pThread = new QThread;
 
-//    g_pDump->moveToThread(g_pThread);
+    g_pDataConvertor->moveToThread(g_pThread);
 
-//    connect(g_pThread, SIGNAL(started()), g_pDump, SLOT(process()));
-//    connect(g_pDump, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
-//    connect(g_pDump, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
+    connect(g_pThread, SIGNAL(started()), g_pDataConvertor, SLOT(process()));
+    connect(g_pDataConvertor, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
+    connect(g_pDataConvertor, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
 }
 
 DialogXDataConvertorProcess::~DialogXDataConvertorProcess()
@@ -41,11 +41,11 @@ DialogXDataConvertorProcess::~DialogXDataConvertorProcess()
     g_pThread->wait();
 
     delete g_pThread;
-    //delete g_pDump;
+    delete g_pDataConvertor;
 }
 
-void DialogXDataConvertorProcess::setData(QIODevice *pDeviceIn, QIODevice *pDeviceOut)
+void DialogXDataConvertorProcess::setData(QIODevice *pDeviceIn, QIODevice *pDeviceOut, XDataConvertor::METHOD method, const XDataConvertor::OPTIONS &options)
 {
-//    g_pDump->setData(pDevice, listRecords, dumpType, getPdStruct());
+    g_pDataConvertor->setData(pDeviceIn, pDeviceOut, method, options, getPdStruct());
     g_pThread->start();
 }

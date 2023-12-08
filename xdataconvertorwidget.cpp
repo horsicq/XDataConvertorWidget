@@ -107,13 +107,14 @@ void XDataConvertorWidget::showMethod(METHOD method)
     }
 }
 
-void XDataConvertorWidget::process(METHOD method)
+void XDataConvertorWidget::process(XDataConvertor::METHOD method, const XDataConvertor::OPTIONS &options)
 {
     QTemporaryFile *pTmpFile = new QTemporaryFile;
     if (pTmpFile->open()) {
         // TODO
         // file.fileName() returns the unique file name
         DialogXDataConvertorProcess dcp(this);
+        dcp.setData(g_pDevice, pTmpFile, method, options);
 
         dcp.showDialogDelay();
     }
@@ -154,7 +155,26 @@ void XDataConvertorWidget::on_comboBoxXORmethod_currentIndexChanged(int nIndex)
 
 void XDataConvertorWidget::on_pushButtonXOR_clicked()
 {
-    process(METHOD_XOR);
+    XDataConvertor::METHOD method = XDataConvertor::METHOD_UNKNOWN;
+    XDataConvertor::OPTIONS options = {};
+
+    SM sm = (SM)(ui->comboBoxXORmethod->currentData(Qt::UserRole).toUInt());
+
+    if (sm == SM_BYTE) {
+        method = XDataConvertor::METHOD_XOR_BYTE;
+        options.varKey = ui->lineEditXORValue->getValue_uint8();
+    } else if (sm == SM_WORD) {
+        method = XDataConvertor::METHOD_XOR_WORD;
+        options.varKey = ui->lineEditXORValue->getValue_uint16();
+    } else if (sm == SM_DWORD) {
+        method = XDataConvertor::METHOD_XOR_DWORD;
+        options.varKey = ui->lineEditXORValue->getValue_uint32();
+    } else if (sm == SM_QWORD) {
+        method = XDataConvertor::METHOD_XOR_QWORD;
+        options.varKey = ui->lineEditXORValue->getValue_uint64();
+    }
+
+    process(method, options);
 }
 
 void XDataConvertorWidget::on_pushButtonDump_clicked()

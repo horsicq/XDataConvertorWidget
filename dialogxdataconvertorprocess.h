@@ -22,6 +22,7 @@
 #define DIALOGXDATACONVERTORPROCESS_H
 
 #include "xdialogprocess.h"
+#include "xdataconvertor.h"
 
 class DialogXDataConvertorProcess : public XDialogProcess
 {
@@ -30,10 +31,11 @@ public:
     explicit DialogXDataConvertorProcess(QWidget *pParent = nullptr);
     ~DialogXDataConvertorProcess();
 
-    void setData(QIODevice *pDeviceIn, QIODevice *pDeviceOut);
+    void setData(QIODevice *pDeviceIn, QIODevice *pDeviceOut, XDataConvertor::METHOD method, const XDataConvertor::OPTIONS &options);
 
 private:
     QThread *g_pThread;
+    XDataConvertor *g_pDataConvertor;
 };
 
 #endif // DIALOGXDATACONVERTORPROCESS_H
