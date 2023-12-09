@@ -24,8 +24,7 @@
 #include "xdialogprocess.h"
 #include "xdataconvertor.h"
 
-class DialogXDataConvertorProcess : public XDialogProcess
-{
+class DialogXDataConvertorProcess : public XDialogProcess {
     Q_OBJECT
 public:
     explicit DialogXDataConvertorProcess(QWidget *pParent = nullptr);
@@ -38,4 +37,4 @@ private:
     XDataConvertor *g_pDataConvertor;
 };
 
-#endif // DIALOGXDATACONVERTORPROCESS_H
+#endif  // DIALOGXDATACONVERTORPROCESS_H
