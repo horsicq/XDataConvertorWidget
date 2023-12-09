@@ -31,7 +31,7 @@ public:
     explicit DialogXDataConvertorProcess(QWidget *pParent = nullptr);
     ~DialogXDataConvertorProcess();
 
-    void setData(QIODevice *pDeviceIn, QIODevice *pDeviceOut, XDataConvertor::METHOD method, const XDataConvertor::OPTIONS &options);
+    void setData(QIODevice *pDeviceIn, QIODevice *pDeviceOut, XDataConvertor::CMETHOD method, const XDataConvertor::OPTIONS &options);
 
 private:
     QThread *g_pThread;

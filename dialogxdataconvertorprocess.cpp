@@ -44,7 +44,7 @@ DialogXDataConvertorProcess::~DialogXDataConvertorProcess()
     delete g_pDataConvertor;
 }
 
-void DialogXDataConvertorProcess::setData(QIODevice *pDeviceIn, QIODevice *pDeviceOut, XDataConvertor::METHOD method, const XDataConvertor::OPTIONS &options)
+void DialogXDataConvertorProcess::setData(QIODevice *pDeviceIn, QIODevice *pDeviceOut, XDataConvertor::CMETHOD method, const XDataConvertor::OPTIONS &options)
 {
     g_pDataConvertor->setData(pDeviceIn, pDeviceOut, method, options, getPdStruct());
     g_pThread->start();

@@ -36,10 +36,10 @@ class XDataConvertorWidget;
 class XDataConvertorWidget : public QWidget {
     Q_OBJECT
 
-    enum METHOD {
-        METHOD_UNKNOWN = 0,
-        METHOD_NONE,
-        METHOD_XOR
+    enum CMETHOD {
+        CMETHOD_UNKNOWN = 0,
+        CMETHOD_NONE,
+        CMETHOD_XOR
     };
 
     enum SM {
@@ -68,16 +68,16 @@ private slots:
     void on_pushButtonDump_clicked();
 
 private:
-    void _addMethod(QString sName, METHOD method);
-    void showMethod(METHOD method);
-    void process(XDataConvertor::METHOD method, const XDataConvertor::OPTIONS &options);
+    void _addMethod(QString sName, CMETHOD method);
+    void showMethod(CMETHOD method);
+    void process(CMETHOD method, XDataConvertor::CMETHOD methodConvertor, const XDataConvertor::OPTIONS &options);
 
 private:
     Ui::XDataConvertorWidget *ui;
-    METHOD g_currentMethod;
+    CMETHOD g_currentMethod;
     QIODevice *g_pDevice;
     XHexView::OPTIONS g_hexOptions;
-    QMap<METHOD, DATA> g_mapData;
+    QMap<CMETHOD, DATA> g_mapData;
 };
 
 #endif  // XDATACONVERTORWIDGET_H

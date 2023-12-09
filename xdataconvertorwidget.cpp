@@ -26,12 +26,12 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent),
     ui->setupUi(this);
 
     g_pDevice = nullptr;
-    g_currentMethod = METHOD_UNKNOWN;
+    g_currentMethod = CMETHOD_UNKNOWN;
 
     ui->listWidgetMethods->blockSignals(true);
 
-    _addMethod(QString(""), METHOD_NONE);
-    _addMethod(QString("XOR"), METHOD_XOR);
+    _addMethod(QString(""), CMETHOD_NONE);
+    _addMethod(QString("XOR"), CMETHOD_XOR);
 
     XOptions::adjustListWidget(ui->listWidgetMethods);
 
@@ -67,7 +67,7 @@ void XDataConvertorWidget::setData(QIODevice *pDevice)
     g_pDevice = pDevice;
 }
 
-void XDataConvertorWidget::_addMethod(QString sName, METHOD method)
+void XDataConvertorWidget::_addMethod(QString sName, CMETHOD method)
 {
     QListWidgetItem *pItem = new QListWidgetItem(sName);
     pItem->setData(Qt::UserRole, method);
@@ -75,19 +75,19 @@ void XDataConvertorWidget::_addMethod(QString sName, METHOD method)
     ui->listWidgetMethods->addItem(pItem);
 
     DATA _data = {};
-    _data.bValid = (method == METHOD_NONE);
+    _data.bValid = (method == CMETHOD_NONE);
 
-    g_mapData.insert(METHOD_NONE, _data);
+    g_mapData.insert(CMETHOD_NONE, _data);
 }
 
-void XDataConvertorWidget::showMethod(METHOD method)
+void XDataConvertorWidget::showMethod(CMETHOD method)
 {
     if (method != g_currentMethod) {
         g_currentMethod = method;
 
         DATA _data = g_mapData.value(method);
 
-        if (method == METHOD_NONE) {
+        if (method == CMETHOD_NONE) {
             ui->widgetHex->setData(g_pDevice, g_hexOptions, true);
         } else if (_data.bValid) {
             ui->widgetHex->setData(_data.pTmpFile, g_hexOptions, true);
@@ -95,34 +95,44 @@ void XDataConvertorWidget::showMethod(METHOD method)
             ui->widgetHex->setDevice(nullptr);
         }
 
-        if (method == METHOD_NONE) {
+        if (method == CMETHOD_NONE) {
             ui->stackedWidgetOptions->hide();
         } else {
             ui->stackedWidgetOptions->show();
         }
 
-        if (method == METHOD_XOR) {
+        if (method == CMETHOD_XOR) {
             ui->stackedWidgetOptions->setCurrentWidget(ui->pageXOR);
         }
     }
 }
 
-void XDataConvertorWidget::process(XDataConvertor::METHOD method, const XDataConvertor::OPTIONS &options)
+void XDataConvertorWidget::process(CMETHOD method, XDataConvertor::CMETHOD methodConvertor, const XDataConvertor::OPTIONS &options)
 {
     QTemporaryFile *pTmpFile = new QTemporaryFile;
     if (pTmpFile->open()) {
         // TODO
         // file.fileName() returns the unique file name
         DialogXDataConvertorProcess dcp(this);
-        dcp.setData(g_pDevice, pTmpFile, method, options);
+        dcp.setData(g_pDevice, pTmpFile, methodConvertor, options);
 
-        dcp.showDialogDelay();
+        if (dcp.showDialogDelay() == QDialog::Accepted) {
+            g_mapData[method].bValid;
+
+            ui->widgetHex->setData(pTmpFile, g_hexOptions, true);
+
+            if (g_mapData[method].pTmpFile) {
+                delete g_mapData[method].pTmpFile;
+            }
+
+            g_mapData[method].pTmpFile = pTmpFile;
+        }
     }
 }
 
 void XDataConvertorWidget::on_listWidgetMethods_itemClicked(QListWidgetItem *pItem)
 {
-    METHOD method = (METHOD)(pItem->data(Qt::UserRole).toInt());
+    CMETHOD method = (CMETHOD)(pItem->data(Qt::UserRole).toInt());
 
     showMethod(method);
 }
@@ -131,7 +141,7 @@ void XDataConvertorWidget::on_listWidgetMethods_currentItemChanged(QListWidgetIt
 {
     Q_UNUSED(pPrevious)
 
-    METHOD method = (METHOD)(pCurrent->data(Qt::UserRole).toInt());
+    CMETHOD method = (CMETHOD)(pCurrent->data(Qt::UserRole).toInt());
 
     showMethod(method);
 }
@@ -155,26 +165,26 @@ void XDataConvertorWidget::on_comboBoxXORmethod_currentIndexChanged(int nIndex)
 
 void XDataConvertorWidget::on_pushButtonXOR_clicked()
 {
-    XDataConvertor::METHOD method = XDataConvertor::METHOD_UNKNOWN;
+    XDataConvertor::CMETHOD methodConvertor = XDataConvertor::CMETHOD_UNKNOWN;
     XDataConvertor::OPTIONS options = {};
 
     SM sm = (SM)(ui->comboBoxXORmethod->currentData(Qt::UserRole).toUInt());
 
     if (sm == SM_BYTE) {
-        method = XDataConvertor::METHOD_XOR_BYTE;
+        methodConvertor = XDataConvertor::CMETHOD_XOR_BYTE;
         options.varKey = ui->lineEditXORValue->getValue_uint8();
     } else if (sm == SM_WORD) {
-        method = XDataConvertor::METHOD_XOR_WORD;
+        methodConvertor = XDataConvertor::CMETHOD_XOR_WORD;
         options.varKey = ui->lineEditXORValue->getValue_uint16();
     } else if (sm == SM_DWORD) {
-        method = XDataConvertor::METHOD_XOR_DWORD;
+        methodConvertor = XDataConvertor::CMETHOD_XOR_DWORD;
         options.varKey = ui->lineEditXORValue->getValue_uint32();
     } else if (sm == SM_QWORD) {
-        method = XDataConvertor::METHOD_XOR_QWORD;
+        methodConvertor = XDataConvertor::CMETHOD_XOR_QWORD;
         options.varKey = ui->lineEditXORValue->getValue_uint64();
     }
 
-    process(method, options);
+    process(CMETHOD_XOR, methodConvertor, options);
 }
 
 void XDataConvertorWidget::on_pushButtonDump_clicked()
