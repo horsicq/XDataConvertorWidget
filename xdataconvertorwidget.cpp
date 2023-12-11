@@ -40,7 +40,7 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent),
     g_hexOptions = {};
     ui->widgetHex->setContextMenuEnable(false);
 
-    ui->stackedWidgetOptions->hide();
+    ui->stackedWidgetOptions->setCurrentWidget(ui->pageOriginal);
 
     // XOR
     {
@@ -96,12 +96,8 @@ void XDataConvertorWidget::showMethod(CMETHOD method)
         }
 
         if (method == CMETHOD_NONE) {
-            ui->stackedWidgetOptions->hide();
-        } else {
-            ui->stackedWidgetOptions->show();
-        }
-
-        if (method == CMETHOD_XOR) {
+            ui->stackedWidgetOptions->setCurrentWidget(ui->pageOriginal);
+        } else if (method == CMETHOD_XOR) {
             ui->stackedWidgetOptions->setCurrentWidget(ui->pageXOR);
         }
     }
@@ -117,7 +113,7 @@ void XDataConvertorWidget::process(CMETHOD method, XDataConvertor::CMETHOD metho
         dcp.setData(g_pDevice, pTmpFile, methodConvertor, options);
 
         if (dcp.showDialogDelay() == QDialog::Accepted) {
-            g_mapData[method].bValid;
+            g_mapData[method].bValid = true;
 
             ui->widgetHex->setData(pTmpFile, g_hexOptions, true);
 
