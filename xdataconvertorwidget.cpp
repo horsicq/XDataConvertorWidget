@@ -110,10 +110,13 @@ void XDataConvertorWidget::showMethod(CMETHOD method)
 
         if (method == CMETHOD_NONE) {
             ui->widgetHex->setData(g_pDevice, g_hexOptions, true);
+            ui->lineEditSizeConverted->setValue_uint64(g_pDevice->size(), XLineEditHEX::_MODE_SIZE);
         } else if (_data.bValid) {
             ui->widgetHex->setData(_data.pTmpFile, g_hexOptions, true);
+            ui->lineEditSizeConverted->setValue_uint64(_data.pTmpFile->size(), XLineEditHEX::_MODE_SIZE);
         } else {
             ui->widgetHex->setDevice(nullptr);
+            ui->lineEditSizeConverted->setValue_uint64(0, XLineEditHEX::_MODE_SIZE);
         }
 
         if (method == CMETHOD_NONE) {
@@ -145,6 +148,7 @@ void XDataConvertorWidget::process(CMETHOD method, XDataConvertor::CMETHOD metho
             }
 
             g_mapData[method].pTmpFile = pTmpFile;
+            ui->lineEditSizeConverted->setValue_uint64(pTmpFile->size(), XLineEditHEX::_MODE_SIZE);
         }
     }
 }
@@ -274,5 +278,17 @@ void XDataConvertorWidget::on_pushButtonSUB_clicked()
     }
 
     process(CMETHOD_ADDSUB, methodConvertor, options);
+}
+
+void XDataConvertorWidget::on_pushButtonBase64Encode_clicked()
+{
+    XDataConvertor::OPTIONS options = {};
+    process(CMETHOD_BASE64, XDataConvertor::CMETHOD_BASE64_ENCODE, options);
+}
+
+void XDataConvertorWidget::on_pushButtonBase64Decode_clicked()
+{
+    XDataConvertor::OPTIONS options = {};
+    process(CMETHOD_BASE64, XDataConvertor::CMETHOD_BASE64_DECODE, options);
 }
 

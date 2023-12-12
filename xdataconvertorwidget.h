@@ -40,7 +40,8 @@ class XDataConvertorWidget : public QWidget {
         CMETHOD_UNKNOWN = 0,
         CMETHOD_NONE,
         CMETHOD_XOR,
-        CMETHOD_ADDSUB
+        CMETHOD_ADDSUB,
+        CMETHOD_BASE64
     };
 
     enum SM {
@@ -70,6 +71,8 @@ private slots:
     void on_comboBoxADDSUBmethod_currentIndexChanged(int nIndex);
     void on_pushButtonADD_clicked();
     void on_pushButtonSUB_clicked();
+    void on_pushButtonBase64Encode_clicked();
+    void on_pushButtonBase64Decode_clicked();
 
 private:
     void _addMethod(QString sName, CMETHOD method);
