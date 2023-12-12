@@ -27,11 +27,16 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent),
 
     g_pDevice = nullptr;
     g_currentMethod = CMETHOD_UNKNOWN;
+    ui->lineEditSizeOriginal->setReadOnly(true);
+    ui->lineEditSizeConverted->setReadOnly(true);
+    ui->lineEditEntropyOriginal->setReadOnly(true);
+    ui->lineEditEntropyConverted->setReadOnly(true);
 
     ui->listWidgetMethods->blockSignals(true);
 
     _addMethod(QString(""), CMETHOD_NONE);
     _addMethod(QString("XOR"), CMETHOD_XOR);
+    _addMethod(QString("ADD/SUB"), CMETHOD_ADDSUB);
 
     XOptions::adjustListWidget(ui->listWidgetMethods);
 
@@ -42,7 +47,6 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent),
 
     ui->stackedWidgetOptions->setCurrentWidget(ui->pageOriginal);
 
-    // XOR
     {
         ui->comboBoxXORmethod->blockSignals(true);
 
@@ -55,6 +59,18 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent),
 
         ui->comboBoxXORmethod->blockSignals(false);
     }
+    {
+        ui->comboBoxADDSUBmethod->blockSignals(true);
+
+        ui->comboBoxADDSUBmethod->addItem("BYTE", SM_BYTE);
+        ui->comboBoxADDSUBmethod->addItem("WORD", SM_WORD);
+        ui->comboBoxADDSUBmethod->addItem("DWORD", SM_DWORD);
+        ui->comboBoxADDSUBmethod->addItem("QWORD", SM_QWORD);
+
+        ui->lineEditADDSUBValue->setValidatorModeValue(XLineEditValidator::MODE_HEX_8, 0);
+
+        ui->comboBoxADDSUBmethod->blockSignals(false);
+    }
 }
 
 XDataConvertorWidget::~XDataConvertorWidget()
@@ -65,6 +81,11 @@ XDataConvertorWidget::~XDataConvertorWidget()
 void XDataConvertorWidget::setData(QIODevice *pDevice)
 {
     g_pDevice = pDevice;
+
+    ui->lineEditSizeOriginal->setValue_uint64(pDevice->size(), XLineEditHEX::_MODE_SIZE);
+    ui->lineEditSizeConverted->setValue_uint64(pDevice->size(), XLineEditHEX::_MODE_SIZE);
+
+//    double dEntropy = XBinary::getEntropy(pDevice);
 }
 
 void XDataConvertorWidget::_addMethod(QString sName, CMETHOD method)
@@ -99,6 +120,8 @@ void XDataConvertorWidget::showMethod(CMETHOD method)
             ui->stackedWidgetOptions->setCurrentWidget(ui->pageOriginal);
         } else if (method == CMETHOD_XOR) {
             ui->stackedWidgetOptions->setCurrentWidget(ui->pageXOR);
+        } else if (method == CMETHOD_ADDSUB) {
+            ui->stackedWidgetOptions->setCurrentWidget(ui->pageADDSUB);
         }
     }
 }
@@ -142,6 +165,11 @@ void XDataConvertorWidget::on_listWidgetMethods_currentItemChanged(QListWidgetIt
     showMethod(method);
 }
 
+void XDataConvertorWidget::on_pushButtonDump_clicked()
+{
+    ui->widgetHex->dumpMemory();
+}
+
 void XDataConvertorWidget::on_comboBoxXORmethod_currentIndexChanged(int nIndex)
 {
     Q_UNUSED(nIndex)
@@ -183,7 +211,68 @@ void XDataConvertorWidget::on_pushButtonXOR_clicked()
     process(CMETHOD_XOR, methodConvertor, options);
 }
 
-void XDataConvertorWidget::on_pushButtonDump_clicked()
+void XDataConvertorWidget::on_comboBoxADDSUBmethod_currentIndexChanged(int nIndex)
 {
-    ui->widgetHex->dumpMemory();
+    Q_UNUSED(nIndex)
+
+    SM sm = (SM)(ui->comboBoxADDSUBmethod->currentData(Qt::UserRole).toUInt());
+
+    if (sm == SM_BYTE) {
+        ui->lineEditADDSUBValue->setValidatorMode(XLineEditValidator::MODE_HEX_8);
+    } else if (sm == SM_WORD) {
+        ui->lineEditADDSUBValue->setValidatorMode(XLineEditValidator::MODE_HEX_16);
+    } else if (sm == SM_DWORD) {
+        ui->lineEditADDSUBValue->setValidatorMode(XLineEditValidator::MODE_HEX_32);
+    } else if (sm == SM_QWORD) {
+        ui->lineEditADDSUBValue->setValidatorMode(XLineEditValidator::MODE_HEX_64);
+    }
 }
+
+void XDataConvertorWidget::on_pushButtonADD_clicked()
+{
+    XDataConvertor::CMETHOD methodConvertor = XDataConvertor::CMETHOD_UNKNOWN;
+    XDataConvertor::OPTIONS options = {};
+
+    SM sm = (SM)(ui->comboBoxADDSUBmethod->currentData(Qt::UserRole).toUInt());
+
+    if (sm == SM_BYTE) {
+        methodConvertor = XDataConvertor::CMETHOD_ADD_BYTE;
+        options.varKey = ui->lineEditADDSUBValue->getValue_uint8();
+    } else if (sm == SM_WORD) {
+        methodConvertor = XDataConvertor::CMETHOD_ADD_WORD;
+        options.varKey = ui->lineEditADDSUBValue->getValue_uint16();
+    } else if (sm == SM_DWORD) {
+        methodConvertor = XDataConvertor::CMETHOD_ADD_DWORD;
+        options.varKey = ui->lineEditADDSUBValue->getValue_uint32();
+    } else if (sm == SM_QWORD) {
+        methodConvertor = XDataConvertor::CMETHOD_ADD_QWORD;
+        options.varKey = ui->lineEditADDSUBValue->getValue_uint64();
+    }
+
+    process(CMETHOD_ADDSUB, methodConvertor, options);
+}
+
+void XDataConvertorWidget::on_pushButtonSUB_clicked()
+{
+    XDataConvertor::CMETHOD methodConvertor = XDataConvertor::CMETHOD_UNKNOWN;
+    XDataConvertor::OPTIONS options = {};
+
+    SM sm = (SM)(ui->comboBoxADDSUBmethod->currentData(Qt::UserRole).toUInt());
+
+    if (sm == SM_BYTE) {
+        methodConvertor = XDataConvertor::CMETHOD_SUB_BYTE;
+        options.varKey = ui->lineEditADDSUBValue->getValue_uint8();
+    } else if (sm == SM_WORD) {
+        methodConvertor = XDataConvertor::CMETHOD_SUB_WORD;
+        options.varKey = ui->lineEditADDSUBValue->getValue_uint16();
+    } else if (sm == SM_DWORD) {
+        methodConvertor = XDataConvertor::CMETHOD_SUB_DWORD;
+        options.varKey = ui->lineEditADDSUBValue->getValue_uint32();
+    } else if (sm == SM_QWORD) {
+        methodConvertor = XDataConvertor::CMETHOD_SUB_QWORD;
+        options.varKey = ui->lineEditADDSUBValue->getValue_uint64();
+    }
+
+    process(CMETHOD_ADDSUB, methodConvertor, options);
+}
+

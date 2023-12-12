@@ -140,7 +140,58 @@
            <item>
             <widget class="QPushButton" name="pushButtonXOR">
              <property name="text">
-              <string>XOR</string>
+              <string notr="true">XOR</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="pageADDSUB">
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QComboBox" name="comboBoxADDSUBmethod">
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="XLineEditHEX" name="lineEditADDSUBValue">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>71</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonADD">
+             <property name="text">
+              <string notr="true">ADD</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonSUB">
+             <property name="text">
+              <string notr="true">SUB</string>
              </property>
             </widget>
            </item>
@@ -211,10 +262,10 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="lineEditSizeOriginal"/>
+         <widget class="XLineEditHEX" name="lineEditSizeOriginal"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEditSizeTransformed"/>
+         <widget class="XLineEditHEX" name="lineEditSizeConverted"/>
         </item>
        </layout>
       </widget>
@@ -238,10 +289,10 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="lineEditEntropyOriginal"/>
+         <widget class="XLineEditHEX" name="lineEditEntropyOriginal"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEditEntropyTransformed"/>
+         <widget class="XLineEditHEX" name="lineEditEntropyConverted"/>
         </item>
        </layout>
       </widget>

@@ -39,7 +39,8 @@ class XDataConvertorWidget : public QWidget {
     enum CMETHOD {
         CMETHOD_UNKNOWN = 0,
         CMETHOD_NONE,
-        CMETHOD_XOR
+        CMETHOD_XOR,
+        CMETHOD_ADDSUB
     };
 
     enum SM {
@@ -63,9 +64,12 @@ public:
 private slots:
     void on_listWidgetMethods_itemClicked(QListWidgetItem *pItem);
     void on_listWidgetMethods_currentItemChanged(QListWidgetItem *pCurrent, QListWidgetItem *pPrevious);
+    void on_pushButtonDump_clicked();
     void on_comboBoxXORmethod_currentIndexChanged(int nIndex);
     void on_pushButtonXOR_clicked();
-    void on_pushButtonDump_clicked();
+    void on_comboBoxADDSUBmethod_currentIndexChanged(int nIndex);
+    void on_pushButtonADD_clicked();
+    void on_pushButtonSUB_clicked();
 
 private:
     void _addMethod(QString sName, CMETHOD method);
