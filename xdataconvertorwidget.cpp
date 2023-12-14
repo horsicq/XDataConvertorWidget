@@ -85,7 +85,10 @@ void XDataConvertorWidget::setData(QIODevice *pDevice)
     ui->lineEditSizeOriginal->setValue_uint64(pDevice->size(), XLineEditHEX::_MODE_SIZE);
     ui->lineEditSizeConverted->setValue_uint64(pDevice->size(), XLineEditHEX::_MODE_SIZE);
 
-//    double dEntropy = XBinary::getEntropy(pDevice);
+    double dEntropy = XBinary::getEntropy(pDevice);
+
+    ui->lineEditEntropyOriginal->setText(QString::number(dEntropy));
+    ui->lineEditEntropyConverted->setText(QString::number(dEntropy));
 }
 
 void XDataConvertorWidget::_addMethod(QString sName, CMETHOD method)
