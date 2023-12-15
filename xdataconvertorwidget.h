@@ -54,6 +54,7 @@ class XDataConvertorWidget : public QWidget {
     struct DATA {
         bool bValid;
         QTemporaryFile *pTmpFile;
+        double dEntropy;
     };
 
 public:

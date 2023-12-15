@@ -87,8 +87,8 @@ void XDataConvertorWidget::setData(QIODevice *pDevice)
 
     double dEntropy = XBinary::getEntropy(pDevice);
 
-    ui->lineEditEntropyOriginal->setText(QString::number(dEntropy));
-    ui->lineEditEntropyConverted->setText(QString::number(dEntropy));
+    ui->lineEditEntropyOriginal->setValue_double(dEntropy);
+    ui->lineEditEntropyConverted->setValue_double(dEntropy);
 }
 
 void XDataConvertorWidget::_addMethod(QString sName, CMETHOD method)
@@ -117,9 +117,11 @@ void XDataConvertorWidget::showMethod(CMETHOD method)
         } else if (_data.bValid) {
             ui->widgetHex->setData(_data.pTmpFile, g_hexOptions, true);
             ui->lineEditSizeConverted->setValue_uint64(_data.pTmpFile->size(), XLineEditHEX::_MODE_SIZE);
+            ui->lineEditEntropyConverted->setValue_double(_data.dEntropy);
         } else {
             ui->widgetHex->setDevice(nullptr);
             ui->lineEditSizeConverted->setValue_uint64(0, XLineEditHEX::_MODE_SIZE);
+            ui->lineEditEntropyConverted->setValue_double(0);
         }
 
         if (method == CMETHOD_NONE) {
@@ -151,7 +153,9 @@ void XDataConvertorWidget::process(CMETHOD method, XDataConvertor::CMETHOD metho
             }
 
             g_mapData[method].pTmpFile = pTmpFile;
+            g_mapData[method].dEntropy = XBinary::getEntropy(pTmpFile);
             ui->lineEditSizeConverted->setValue_uint64(pTmpFile->size(), XLineEditHEX::_MODE_SIZE);
+            ui->lineEditEntropyConverted->setValue_double(g_mapData[method].dEntropy);
         }
     }
 }
