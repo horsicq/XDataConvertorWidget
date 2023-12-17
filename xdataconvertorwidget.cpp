@@ -298,4 +298,3 @@ void XDataConvertorWidget::on_pushButtonBase64Decode_clicked()
     XDataConvertor::OPTIONS options = {};
     process(CMETHOD_BASE64, XDataConvertor::CMETHOD_BASE64_DECODE, options);
 }
-
