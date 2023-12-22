@@ -41,7 +41,8 @@ class XDataConvertorWidget : public QWidget {
         CMETHOD_NONE,
         CMETHOD_XOR,
         CMETHOD_ADDSUB,
-        CMETHOD_BASE64
+        CMETHOD_BASE64,
+        // TODO mopre
     };
 
     enum SM {
