@@ -52,11 +52,7 @@ class XDataConvertorWidget : public QWidget {
         SM_QWORD
     };
 
-    struct DATA {
-        bool bValid;
-        QTemporaryFile *pTmpFile;
-        double dEntropy;
-    };
+
 
 public:
     explicit XDataConvertorWidget(QWidget *pParent = nullptr);
@@ -67,7 +63,6 @@ public:
 private slots:
     void on_listWidgetMethods_itemClicked(QListWidgetItem *pItem);
     void on_listWidgetMethods_currentItemChanged(QListWidgetItem *pCurrent, QListWidgetItem *pPrevious);
-    void on_pushButtonDump_clicked();
     void on_comboBoxXORmethod_currentIndexChanged(int nIndex);
     void on_pushButtonXOR_clicked();
     void on_comboBoxADDSUBmethod_currentIndexChanged(int nIndex);
@@ -75,6 +70,8 @@ private slots:
     void on_pushButtonSUB_clicked();
     void on_pushButtonBase64Encode_clicked();
     void on_pushButtonBase64Decode_clicked();
+    void on_pushButtonDumpInput_clicked();
+    void on_pushButtonDumpOutput_clicked();
 
 private:
     void _addMethod(QString sName, CMETHOD method);
@@ -83,10 +80,9 @@ private:
 
 private:
     Ui::XDataConvertorWidget *ui;
-    CMETHOD g_currentMethod;
     QIODevice *g_pDevice;
     XHexView::OPTIONS g_hexOptions;
-    QMap<CMETHOD, DATA> g_mapData;
+    QMap<CMETHOD, XDataConvertor::DATA> g_mapData;
 };
 
 #endif  // XDATACONVERTORWIDGET_H

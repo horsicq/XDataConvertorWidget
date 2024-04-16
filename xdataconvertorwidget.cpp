@@ -26,11 +26,10 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent),
     ui->setupUi(this);
 
     g_pDevice = nullptr;
-    g_currentMethod = CMETHOD_UNKNOWN;
-    ui->lineEditSizeOriginal->setReadOnly(true);
-    ui->lineEditSizeConverted->setReadOnly(true);
-    ui->lineEditEntropyOriginal->setReadOnly(true);
-    ui->lineEditEntropyConverted->setReadOnly(true);
+    ui->lineEditSizeInput->setReadOnly(true);
+    ui->lineEditSizeOutput->setReadOnly(true);
+    ui->lineEditEntropyInput->setReadOnly(true);
+    ui->lineEditEntropyOutput->setReadOnly(true);
 
     ui->listWidgetMethods->blockSignals(true);
 
@@ -43,7 +42,8 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent),
     ui->listWidgetMethods->blockSignals(false);
 
     g_hexOptions = {};
-    ui->widgetHex->setContextMenuEnable(false);
+    ui->widgetHexInput->setContextMenuEnable(false);
+    ui->widgetHexOutput->setContextMenuEnable(false);
 
     ui->stackedWidgetOptions->setCurrentWidget(ui->pageOriginal);
 
@@ -82,13 +82,12 @@ void XDataConvertorWidget::setData(QIODevice *pDevice)
 {
     g_pDevice = pDevice;
 
-    ui->lineEditSizeOriginal->setValue_uint64(pDevice->size(), XLineEditHEX::_MODE_SIZE);
-    ui->lineEditSizeConverted->setValue_uint64(pDevice->size(), XLineEditHEX::_MODE_SIZE);
+    ui->widgetHexInput->setData(pDevice, g_hexOptions, true);
 
-    double dEntropy = XBinary::getEntropy(pDevice);
+    XDataConvertor::OPTIONS options = {};
+    process(CMETHOD_NONE, XDataConvertor::CMETHOD_NONE, options);
 
-    ui->lineEditEntropyOriginal->setValue_double(dEntropy);
-    ui->lineEditEntropyConverted->setValue_double(dEntropy);
+    ui->listWidgetMethods->setCurrentRow(0);
 }
 
 void XDataConvertorWidget::_addMethod(QString sName, CMETHOD method)
@@ -98,66 +97,54 @@ void XDataConvertorWidget::_addMethod(QString sName, CMETHOD method)
 
     ui->listWidgetMethods->addItem(pItem);
 
-    DATA _data = {};
-    _data.bValid = (method == CMETHOD_NONE);
+    XDataConvertor::DATA _data = {};
+    _data.bValid = false;
 
-    g_mapData.insert(CMETHOD_NONE, _data);
+    g_mapData.insert(method, _data);
 }
 
 void XDataConvertorWidget::showMethod(CMETHOD method)
 {
-    if (method != g_currentMethod) {
-        g_currentMethod = method;
+    XDataConvertor::DATA _data = g_mapData.value(method);
 
-        DATA _data = g_mapData.value(method);
+    ui->lineEditEntropyOutput->setValue_double(_data.dEntropy);
 
-        if (method == CMETHOD_NONE) {
-            ui->widgetHex->setData(g_pDevice, g_hexOptions, true);
-            ui->lineEditSizeConverted->setValue_uint64(g_pDevice->size(), XLineEditHEX::_MODE_SIZE);
-        } else if (_data.bValid) {
-            ui->widgetHex->setData(_data.pTmpFile, g_hexOptions, true);
-            ui->lineEditSizeConverted->setValue_uint64(_data.pTmpFile->size(), XLineEditHEX::_MODE_SIZE);
-            ui->lineEditEntropyConverted->setValue_double(_data.dEntropy);
-        } else {
-            ui->widgetHex->setDevice(nullptr);
-            ui->lineEditSizeConverted->setValue_uint64(0, XLineEditHEX::_MODE_SIZE);
-            ui->lineEditEntropyConverted->setValue_double(0);
-        }
+    if (method == CMETHOD_NONE) {
+        ui->widgetHexOutput->setData(g_pDevice, g_hexOptions, true);
+        ui->lineEditSizeOutput->setValue_uint64(g_pDevice->size(), XLineEditHEX::_MODE_SIZE);
+    } else if (_data.bValid) {
+        ui->widgetHexOutput->setData(_data.pTmpFile, g_hexOptions, true);
+        ui->lineEditSizeOutput->setValue_uint64(_data.pTmpFile->size(), XLineEditHEX::_MODE_SIZE);
+    } else {
+        ui->widgetHexOutput->setDevice(nullptr);
+        ui->lineEditSizeOutput->setValue_uint64(0, XLineEditHEX::_MODE_SIZE);
+    }
 
-        if (method == CMETHOD_NONE) {
-            ui->stackedWidgetOptions->setCurrentWidget(ui->pageOriginal);
-        } else if (method == CMETHOD_XOR) {
-            ui->stackedWidgetOptions->setCurrentWidget(ui->pageXOR);
-        } else if (method == CMETHOD_ADDSUB) {
-            ui->stackedWidgetOptions->setCurrentWidget(ui->pageADDSUB);
-        }
+    if (method == CMETHOD_NONE) {
+        ui->stackedWidgetOptions->setCurrentWidget(ui->pageOriginal);
+    } else if (method == CMETHOD_XOR) {
+        ui->stackedWidgetOptions->setCurrentWidget(ui->pageXOR);
+    } else if (method == CMETHOD_ADDSUB) {
+        ui->stackedWidgetOptions->setCurrentWidget(ui->pageADDSUB);
     }
 }
 
 void XDataConvertorWidget::process(CMETHOD method, XDataConvertor::CMETHOD methodConvertor, const XDataConvertor::OPTIONS &options)
-{
-    QTemporaryFile *pTmpFile = new QTemporaryFile;
-    if (pTmpFile->open()) {
-        // TODO
-        // file.fileName() returns the unique file name
-        DialogXDataConvertorProcess dcp(this);
-        dcp.setData(g_pDevice, pTmpFile, methodConvertor, options);
+{    
+    XDataConvertor::DATA _data = {};
 
-        if (dcp.showDialogDelay() == QDialog::Accepted) {
-            g_mapData[method].bValid = true;
+    DialogXDataConvertorProcess dcp(this);
+    dcp.setData(g_pDevice, &_data, methodConvertor, options);
 
-            ui->widgetHex->setData(pTmpFile, g_hexOptions, true);
-
-            if (g_mapData[method].pTmpFile) {
-                delete g_mapData[method].pTmpFile;
-            }
-
-            g_mapData[method].pTmpFile = pTmpFile;
-            g_mapData[method].dEntropy = XBinary::getEntropy(pTmpFile);
-            ui->lineEditSizeConverted->setValue_uint64(pTmpFile->size(), XLineEditHEX::_MODE_SIZE);
-            ui->lineEditEntropyConverted->setValue_double(g_mapData[method].dEntropy);
+    if (dcp.showDialogDelay() == QDialog::Accepted) {
+        if (g_mapData[method].pTmpFile) {
+            delete g_mapData[method].pTmpFile;
         }
+
+        g_mapData[method] = _data;
     }
+
+    showMethod(method);
 }
 
 void XDataConvertorWidget::on_listWidgetMethods_itemClicked(QListWidgetItem *pItem)
@@ -174,11 +161,6 @@ void XDataConvertorWidget::on_listWidgetMethods_currentItemChanged(QListWidgetIt
     CMETHOD method = (CMETHOD)(pCurrent->data(Qt::UserRole).toInt());
 
     showMethod(method);
-}
-
-void XDataConvertorWidget::on_pushButtonDump_clicked()
-{
-    ui->widgetHex->dumpMemory();
 }
 
 void XDataConvertorWidget::on_comboBoxXORmethod_currentIndexChanged(int nIndex)
@@ -297,4 +279,14 @@ void XDataConvertorWidget::on_pushButtonBase64Decode_clicked()
 {
     XDataConvertor::OPTIONS options = {};
     process(CMETHOD_BASE64, XDataConvertor::CMETHOD_BASE64_DECODE, options);
+}
+
+void XDataConvertorWidget::on_pushButtonDumpInput_clicked()
+{
+    ui->widgetHexInput->dumpMemory();
+}
+
+void XDataConvertorWidget::on_pushButtonDumpOutput_clicked()
+{
+    ui->widgetHexOutput->dumpMemory();
 }
