@@ -110,6 +110,8 @@ void XDataConvertorWidget::showMethod(CMETHOD method)
     ui->lineEditEntropyOutput->setValue_double(_data.dEntropy);
 
     if (method == CMETHOD_NONE) {
+        ui->lineEditEntropyInput->setValue_double(_data.dEntropy);
+        ui->lineEditSizeInput->setValue_uint64(g_pDevice->size(), XLineEditHEX::_MODE_SIZE);
         ui->widgetHexOutput->setData(g_pDevice, g_hexOptions, true);
         ui->lineEditSizeOutput->setValue_uint64(g_pDevice->size(), XLineEditHEX::_MODE_SIZE);
     } else if (_data.bValid) {
@@ -283,10 +285,10 @@ void XDataConvertorWidget::on_pushButtonBase64Decode_clicked()
 
 void XDataConvertorWidget::on_pushButtonDumpInput_clicked()
 {
-    ui->widgetHexInput->dumpMemory();
+    ui->widgetHexInput->dumpMemory(tr("Input"));
 }
 
 void XDataConvertorWidget::on_pushButtonDumpOutput_clicked()
 {
-    ui->widgetHexOutput->dumpMemory();
+    ui->widgetHexOutput->dumpMemory(tr("Output"));
 }
