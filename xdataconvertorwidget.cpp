@@ -36,6 +36,7 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent),
     _addMethod(QString(""), CMETHOD_NONE);
     _addMethod(QString("XOR"), CMETHOD_XOR);
     _addMethod(QString("ADD/SUB"), CMETHOD_ADDSUB);
+    _addMethod(QString("Base64"), CMETHOD_BASE64);
 
     XOptions::adjustListWidget(ui->listWidgetMethods);
 
@@ -128,6 +129,8 @@ void XDataConvertorWidget::showMethod(CMETHOD method)
         ui->stackedWidgetOptions->setCurrentWidget(ui->pageXOR);
     } else if (method == CMETHOD_ADDSUB) {
         ui->stackedWidgetOptions->setCurrentWidget(ui->pageADDSUB);
+    } else if (method == CMETHOD_BASE64) {
+        ui->stackedWidgetOptions->setCurrentWidget(ui->pageBASE64);
     }
 }
 
