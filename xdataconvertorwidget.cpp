@@ -135,7 +135,7 @@ void XDataConvertorWidget::showMethod(CMETHOD method)
 }
 
 void XDataConvertorWidget::process(CMETHOD method, XDataConvertor::CMETHOD methodConvertor, const XDataConvertor::OPTIONS &options)
-{    
+{
     XDataConvertor::DATA _data = {};
 
     DialogXDataConvertorProcess dcp(this);

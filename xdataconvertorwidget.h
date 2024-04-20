@@ -52,8 +52,6 @@ class XDataConvertorWidget : public QWidget {
         SM_QWORD
     };
 
-
-
 public:
     explicit XDataConvertorWidget(QWidget *pParent = nullptr);
     ~XDataConvertorWidget();
