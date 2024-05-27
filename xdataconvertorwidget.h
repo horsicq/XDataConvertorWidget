@@ -72,7 +72,7 @@ private slots:
     void on_pushButtonDumpOutput_clicked();
 
 private:
-    void _addMethod(QString sName, CMETHOD method);
+    void _addMethod(const QString &sName, CMETHOD method);
     void showMethod(CMETHOD method);
     void process(CMETHOD method, XDataConvertor::CMETHOD methodConvertor, const XDataConvertor::OPTIONS &options);
 

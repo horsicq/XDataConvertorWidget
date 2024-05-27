@@ -91,7 +91,7 @@ void XDataConvertorWidget::setData(QIODevice *pDevice)
     ui->listWidgetMethods->setCurrentRow(0);
 }
 
-void XDataConvertorWidget::_addMethod(QString sName, CMETHOD method)
+void XDataConvertorWidget::_addMethod(const QString &sName, CMETHOD method)
 {
     QListWidgetItem *pItem = new QListWidgetItem(sName);
     pItem->setData(Qt::UserRole, method);
