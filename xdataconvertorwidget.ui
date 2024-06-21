@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>893</width>
-    <height>533</height>
+    <width>921</width>
+    <height>541</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,16 +44,16 @@
          <number>0</number>
         </property>
         <property name="leftMargin">
-         <number>0</number>
+         <number>2</number>
         </property>
         <property name="topMargin">
-         <number>0</number>
+         <number>2</number>
         </property>
         <property name="rightMargin">
-         <number>0</number>
+         <number>2</number>
         </property>
         <property name="bottomMargin">
-         <number>0</number>
+         <number>2</number>
         </property>
         <item>
          <widget class="QListWidget" name="listWidgetMethods">
@@ -274,16 +274,16 @@
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <item>
            <widget class="XHexView" name="widgetHexInput" native="true">
@@ -304,16 +304,16 @@
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_13">
                <property name="leftMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="topMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="rightMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="bottomMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <item>
                 <widget class="XLineEditHEX" name="lineEditSizeInput">
@@ -335,16 +335,16 @@
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_14">
                <property name="leftMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="topMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="rightMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="bottomMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <item>
                 <widget class="XLineEditHEX" name="lineEditEntropyInput">
@@ -400,16 +400,16 @@
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <item>
            <widget class="XHexView" name="widgetHexOutput" native="true">
@@ -430,16 +430,16 @@
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_8">
                <property name="leftMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="topMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="rightMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="bottomMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <item>
                 <widget class="XLineEditHEX" name="lineEditSizeOutput">
@@ -461,16 +461,16 @@
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_11">
                <property name="leftMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="topMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="rightMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="bottomMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <item>
                 <widget class="XLineEditHEX" name="lineEditEntropyOutput">
