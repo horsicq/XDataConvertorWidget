@@ -21,7 +21,7 @@
 #include "xdataconvertorwidget.h"
 #include "ui_xdataconvertorwidget.h"
 
-XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent), ui(new Ui::XDataConvertorWidget)
+XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : XShortcutsWidget(pParent), ui(new Ui::XDataConvertorWidget)
 {
     ui->setupUi(this);
 
@@ -77,6 +77,11 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : QWidget(pParent),
 XDataConvertorWidget::~XDataConvertorWidget()
 {
     delete ui;
+}
+
+void XDataConvertorWidget::adjustView()
+{
+    // TODO
 }
 
 void XDataConvertorWidget::setData(QIODevice *pDevice)
@@ -150,6 +155,11 @@ void XDataConvertorWidget::process(CMETHOD method, XDataConvertor::CMETHOD metho
     }
 
     showMethod(method);
+}
+
+void XDataConvertorWidget::registerShortcuts(bool bState)
+{
+    Q_UNUSED(bState)
 }
 
 void XDataConvertorWidget::on_listWidgetMethods_itemClicked(QListWidgetItem *pItem)

@@ -21,7 +21,7 @@
 #ifndef XDATACONVERTORWIDGET_H
 #define XDATACONVERTORWIDGET_H
 
-#include <QWidget>
+#include "xshortcutswidget.h"
 #include <QResizeEvent>
 
 #include "xbinary.h"
@@ -33,7 +33,7 @@ namespace Ui {
 class XDataConvertorWidget;
 }
 
-class XDataConvertorWidget : public QWidget {
+class XDataConvertorWidget : public XShortcutsWidget {
     Q_OBJECT
 
     enum CMETHOD {
@@ -56,6 +56,8 @@ public:
     explicit XDataConvertorWidget(QWidget *pParent = nullptr);
     ~XDataConvertorWidget();
 
+    virtual void adjustView();
+
     void setData(QIODevice *pDevice);
 
 private slots:
@@ -75,6 +77,9 @@ private:
     void _addMethod(const QString &sName, CMETHOD method);
     void showMethod(CMETHOD method);
     void process(CMETHOD method, XDataConvertor::CMETHOD methodConvertor, const XDataConvertor::OPTIONS &options);
+
+protected:
+    virtual void registerShortcuts(bool bState);
 
 private:
     Ui::XDataConvertorWidget *ui;
