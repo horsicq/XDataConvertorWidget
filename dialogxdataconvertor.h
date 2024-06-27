@@ -21,23 +21,27 @@
 #ifndef DIALOGXDATACONVERTOR_H
 #define DIALOGXDATACONVERTOR_H
 
-#include <QDialog>
+#include "xshortcutsdialog.h"
 
 namespace Ui {
 class DialogXDataConvertor;
 }
 
-class DialogXDataConvertor : public QDialog {
+class DialogXDataConvertor : public XShortcutsDialog {
     Q_OBJECT
 
 public:
     explicit DialogXDataConvertor(QWidget *pParent = nullptr);
     ~DialogXDataConvertor();
 
+    virtual void adjustView() {}
     void setData(QIODevice *pDevice);
 
 private slots:
     void on_pushButtonOK_clicked();
+
+protected:
+    virtual void registerShortcuts(bool bState) { Q_UNUSED(bState) }
 
 private:
     Ui::DialogXDataConvertor *ui;
