@@ -38,7 +38,7 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : XShortcutsWidget(
     _addMethod(QString("ADD/SUB"), CMETHOD_ADDSUB);
     _addMethod(QString("Base64"), CMETHOD_BASE64);
 
-    XOptions::adjustListWidget(ui->listWidgetMethods);
+    XOptions::adjustListWidgetSize(ui->listWidgetMethods);
 
     ui->listWidgetMethods->blockSignals(false);
 
