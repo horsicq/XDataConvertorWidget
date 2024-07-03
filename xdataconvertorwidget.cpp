@@ -144,6 +144,7 @@ void XDataConvertorWidget::process(CMETHOD method, XDataConvertor::CMETHOD metho
     XDataConvertor::DATA _data = {};
 
     DialogXDataConvertorProcess dcp(this);
+    dcp.setGlobal(getShortcuts(), getGlobalOptions());
     dcp.setData(g_pDevice, &_data, methodConvertor, options);
 
     if (dcp.showDialogDelay() == QDialog::Accepted) {
