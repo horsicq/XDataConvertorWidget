@@ -21,7 +21,7 @@
 #include "dialogxdataconvertor.h"
 #include "ui_dialogxdataconvertor.h"
 
-DialogXDataConvertor::DialogXDataConvertor(QWidget *pParent) : XShortcutsDialog(pParent), ui(new Ui::DialogXDataConvertor)
+DialogXDataConvertor::DialogXDataConvertor(QWidget *pParent) : XShortcutsDialog(pParent, true), ui(new Ui::DialogXDataConvertor)
 {
     ui->setupUi(this);
 }
