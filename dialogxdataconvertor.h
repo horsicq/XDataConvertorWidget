@@ -34,9 +34,7 @@ public:
     explicit DialogXDataConvertor(QWidget *pParent = nullptr);
     ~DialogXDataConvertor();
 
-    virtual void adjustView()
-    {
-    }
+    virtual void adjustView();
     void setData(QIODevice *pDevice);
 
 private slots:

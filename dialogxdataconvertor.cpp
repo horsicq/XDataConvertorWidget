@@ -31,6 +31,11 @@ DialogXDataConvertor::~DialogXDataConvertor()
     delete ui;
 }
 
+void DialogXDataConvertor::adjustView()
+{
+
+}
+
 void DialogXDataConvertor::setData(QIODevice *pDevice)
 {
     ui->widgetDataConvertor->setData(pDevice);
