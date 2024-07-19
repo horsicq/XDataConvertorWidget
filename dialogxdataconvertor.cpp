@@ -45,3 +45,8 @@ void DialogXDataConvertor::on_pushButtonOK_clicked()
 {
     this->close();
 }
+
+void DialogXDataConvertor::registerShortcuts(bool bState)
+{
+
+}
