@@ -33,7 +33,6 @@ DialogXDataConvertor::~DialogXDataConvertor()
 
 void DialogXDataConvertor::adjustView()
 {
-
 }
 
 void DialogXDataConvertor::setData(QIODevice *pDevice)
@@ -48,5 +47,4 @@ void DialogXDataConvertor::on_pushButtonOK_clicked()
 
 void DialogXDataConvertor::registerShortcuts(bool bState)
 {
-
 }
