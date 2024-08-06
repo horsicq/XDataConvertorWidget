@@ -47,4 +47,5 @@ void DialogXDataConvertor::on_pushButtonOK_clicked()
 
 void DialogXDataConvertor::registerShortcuts(bool bState)
 {
+    Q_UNUSED(bState)
 }
