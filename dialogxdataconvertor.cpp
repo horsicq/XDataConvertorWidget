@@ -40,6 +40,13 @@ void DialogXDataConvertor::setData(QIODevice *pDevice)
     ui->widgetDataConvertor->setData(pDevice);
 }
 
+void DialogXDataConvertor::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)
+{
+    ui->widgetDataConvertor->setGlobal(pShortcuts, pXOptions);
+
+    XShortcutsDialog::setGlobal(pShortcuts, pXOptions);
+}
+
 void DialogXDataConvertor::on_pushButtonOK_clicked()
 {
     this->close();

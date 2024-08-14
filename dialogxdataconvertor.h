@@ -37,6 +37,8 @@ public:
     virtual void adjustView();
     void setData(QIODevice *pDevice);
 
+    virtual void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
+
 private slots:
     void on_pushButtonOK_clicked();
 

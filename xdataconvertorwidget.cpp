@@ -96,6 +96,14 @@ void XDataConvertorWidget::setData(QIODevice *pDevice)
     ui->listWidgetMethods->setCurrentRow(0);
 }
 
+void XDataConvertorWidget::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions)
+{
+    ui->widgetHexInput->setGlobal(pShortcuts, pXOptions);
+    ui->widgetHexOutput->setGlobal(pShortcuts, pXOptions);
+
+    XShortcutsWidget::setGlobal(pShortcuts, pXOptions);
+}
+
 void XDataConvertorWidget::_addMethod(const QString &sName, CMETHOD method)
 {
     QListWidgetItem *pItem = new QListWidgetItem(sName);

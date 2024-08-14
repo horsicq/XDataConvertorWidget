@@ -60,6 +60,8 @@ public:
 
     void setData(QIODevice *pDevice);
 
+    virtual void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
+
 private slots:
     void on_listWidgetMethods_itemClicked(QListWidgetItem *pItem);
     void on_listWidgetMethods_currentItemChanged(QListWidgetItem *pCurrent, QListWidgetItem *pPrevious);
