@@ -61,6 +61,7 @@ public:
     void setData(QIODevice *pDevice);
 
     virtual void setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions);
+    virtual void reloadData(bool bSaveSelection);
 
 private slots:
     void on_listWidgetMethods_itemClicked(QListWidgetItem *pItem);

@@ -104,6 +104,11 @@ void XDataConvertorWidget::setGlobal(XShortcuts *pShortcuts, XOptions *pXOptions
     XShortcutsWidget::setGlobal(pShortcuts, pXOptions);
 }
 
+void XDataConvertorWidget::reloadData(bool bSaveSelection)
+{
+    Q_UNUSED(bSaveSelection)
+}
+
 void XDataConvertorWidget::_addMethod(const QString &sName, CMETHOD method)
 {
     QListWidgetItem *pItem = new QListWidgetItem(sName);
