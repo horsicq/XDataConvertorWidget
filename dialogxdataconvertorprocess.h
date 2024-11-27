@@ -26,6 +26,7 @@
 
 class DialogXDataConvertorProcess : public XDialogProcess {
     Q_OBJECT
+
 public:
     explicit DialogXDataConvertorProcess(QWidget *pParent = nullptr);
     ~DialogXDataConvertorProcess();
