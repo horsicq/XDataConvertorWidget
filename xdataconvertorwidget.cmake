@@ -7,7 +7,6 @@ endif()
 
 set(XDATACONVERTORWIDGET_SOURCES
     ${XDATACONVERTORWIDGET_SOURCES}
-    ${XDATACONVERTOR_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/dialogxdataconvertorprocess.cpp
     ${CMAKE_CURRENT_LIST_DIR}/dialogxdataconvertorprocess.h
     ${CMAKE_CURRENT_LIST_DIR}/xdataconvertorwidget.cpp
