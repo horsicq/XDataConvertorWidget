@@ -27,7 +27,7 @@ DialogXDataConvertorProcess::DialogXDataConvertorProcess(QWidget *pParent) : XDi
 
     g_pDataConvertor->moveToThread(g_pThread);
 
-    connect(g_pThread, SIGNAL(started()), g_pDataConvertor, SLOT(process()));
+    connect(g_pThread, SIGNAL(started()), g_pDataConvertor, SLOT(_process()));
     connect(g_pDataConvertor, SIGNAL(completed(qint64)), this, SLOT(onCompleted(qint64)));
     connect(g_pDataConvertor, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)));
 }
