@@ -27,7 +27,8 @@
 #include "xbinary.h"
 #include "xoptions.h"
 #include "xhexview.h"
-#include "dialogxdataconvertorprocess.h"
+#include "xdialogprocess.h"
+#include "xdataconvertor.h"
 
 namespace Ui {
 class XDataConvertorWidget;

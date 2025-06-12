@@ -156,9 +156,11 @@ void XDataConvertorWidget::process(CMETHOD method, XDataConvertor::CMETHOD metho
 {
     XDataConvertor::DATA _data = {};
 
-    DialogXDataConvertorProcess dcp(this);
+    XDataConvertor dataConverter;
+    XDialogProcess dcp(this, &dataConverter);
     dcp.setGlobal(getShortcuts(), getGlobalOptions());
-    dcp.setData(g_pDevice, &_data, methodConvertor, options);
+    dataConverter.setData(g_pDevice, &_data, methodConvertor, options, dcp.getPdStruct());
+    dcp.start();
 
     if (dcp.showDialogDelay() == QDialog::Accepted) {
         if (g_mapData[method].pTmpFile) {
