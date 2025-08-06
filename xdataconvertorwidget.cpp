@@ -25,7 +25,7 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : XShortcutsWidget(
 {
     ui->setupUi(this);
 
-    g_pDevice = nullptr;
+    m_pDevice = nullptr;
     ui->lineEditSizeInput->setReadOnly(true);
     ui->lineEditSizeOutput->setReadOnly(true);
     ui->lineEditEntropyInput->setReadOnly(true);
@@ -42,7 +42,7 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : XShortcutsWidget(
 
     ui->listWidgetMethods->blockSignals(false);
 
-    g_hexOptions = {};
+    m_hexOptions = {};
     ui->widgetHexInput->setContextMenuEnable(false);
     ui->widgetHexOutput->setContextMenuEnable(false);
 
@@ -86,9 +86,9 @@ void XDataConvertorWidget::adjustView()
 
 void XDataConvertorWidget::setData(QIODevice *pDevice)
 {
-    g_pDevice = pDevice;
+    m_pDevice = pDevice;
 
-    ui->widgetHexInput->setData(pDevice, g_hexOptions, true);
+    ui->widgetHexInput->setData(pDevice, m_hexOptions, true);
 
     XDataConvertor::OPTIONS options = {};
     process(CMETHOD_NONE, XDataConvertor::CMETHOD_NONE, options);
@@ -119,22 +119,22 @@ void XDataConvertorWidget::_addMethod(const QString &sName, CMETHOD method)
     XDataConvertor::DATA _data = {};
     _data.bValid = false;
 
-    g_mapData.insert(method, _data);
+    m_mapData.insert(method, _data);
 }
 
 void XDataConvertorWidget::showMethod(CMETHOD method)
 {
-    XDataConvertor::DATA _data = g_mapData.value(method);
+    XDataConvertor::DATA _data = m_mapData.value(method);
 
     ui->lineEditEntropyOutput->setValue_double(_data.dEntropy);
 
     if (method == CMETHOD_NONE) {
         ui->lineEditEntropyInput->setValue_double(_data.dEntropy);
-        ui->lineEditSizeInput->setValue_uint64(g_pDevice->size(), XLineEditHEX::_MODE_SIZE);
-        ui->widgetHexOutput->setData(g_pDevice, g_hexOptions, true);
-        ui->lineEditSizeOutput->setValue_uint64(g_pDevice->size(), XLineEditHEX::_MODE_SIZE);
+        ui->lineEditSizeInput->setValue_uint64(m_pDevice->size(), XLineEditHEX::_MODE_SIZE);
+        ui->widgetHexOutput->setData(m_pDevice, m_hexOptions, true);
+        ui->lineEditSizeOutput->setValue_uint64(m_pDevice->size(), XLineEditHEX::_MODE_SIZE);
     } else if (_data.bValid) {
-        ui->widgetHexOutput->setData(_data.pTmpFile, g_hexOptions, true);
+        ui->widgetHexOutput->setData(_data.pTmpFile, m_hexOptions, true);
         ui->lineEditSizeOutput->setValue_uint64(_data.pTmpFile->size(), XLineEditHEX::_MODE_SIZE);
     } else {
         ui->widgetHexOutput->setDevice(nullptr, 0, -1);
@@ -159,15 +159,15 @@ void XDataConvertorWidget::process(CMETHOD method, XDataConvertor::CMETHOD metho
     XDataConvertor dataConverter;
     XDialogProcess dcp(this, &dataConverter);
     dcp.setGlobal(getShortcuts(), getGlobalOptions());
-    dataConverter.setData(g_pDevice, &_data, methodConvertor, options, dcp.getPdStruct());
+    dataConverter.setData(m_pDevice, &_data, methodConvertor, options, dcp.getPdStruct());
     dcp.start();
 
     if (dcp.showDialogDelay() == QDialog::Accepted) {
-        if (g_mapData[method].pTmpFile) {
-            delete g_mapData[method].pTmpFile;
+        if (m_mapData[method].pTmpFile) {
+            delete m_mapData[method].pTmpFile;
         }
 
-        g_mapData[method] = _data;
+        m_mapData[method] = _data;
     }
 
     showMethod(method);
