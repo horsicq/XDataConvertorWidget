@@ -88,7 +88,7 @@ protected:
 private:
     Ui::XDataConvertorWidget *ui;
     QIODevice *m_pDevice;
-    XHexView::OPTIONS m_hexOptions;
+    XBinaryView::OPTIONS m_hexOptions;
     QMap<CMETHOD, XDataConvertor::DATA> m_mapData;
 };
 

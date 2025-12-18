@@ -137,7 +137,7 @@ void XDataConvertorWidget::showMethod(CMETHOD method)
         ui->widgetHexOutput->setData(_data.pTmpFile, m_hexOptions, true);
         ui->lineEditSizeOutput->setValue_uint64(_data.pTmpFile->size(), XLineEditHEX::_MODE_SIZE);
     } else {
-        ui->widgetHexOutput->setDevice(nullptr, 0, -1);
+        ui->widgetHexOutput->reset();
         ui->lineEditSizeOutput->setValue_uint64(0, XLineEditHEX::_MODE_SIZE);
     }
 
