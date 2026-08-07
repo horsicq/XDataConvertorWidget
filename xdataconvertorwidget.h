@@ -43,7 +43,17 @@ class XDataConvertorWidget : public XShortcutsWidget {
         CMETHOD_XOR,
         CMETHOD_ADDSUB,
         CMETHOD_BASE64,
-        // TODO more
+        CMETHOD_NOT,
+        CMETHOD_ROTATE,
+        CMETHOD_BSWAP,
+        CMETHOD_REVERSE,
+        CMETHOD_HEX,
+        CMETHOD_KEY,
+        CMETHOD_BITOPS,
+        CMETHOD_SHIFT,
+        CMETHOD_TEXT,
+        CMETHOD_ENCODING,
+        CMETHOD_DECOMPRESS,
     };
 
     enum SM {
@@ -51,6 +61,12 @@ class XDataConvertorWidget : public XShortcutsWidget {
         SM_WORD,
         SM_DWORD,
         SM_QWORD
+    };
+
+    enum BITOP {
+        BITOP_NEG = 0,
+        BITOP_BITREVERSE,
+        BITOP_NIBBLESWAP
     };
 
 public:
@@ -65,7 +81,6 @@ public:
     virtual void reloadData(bool bSaveSelection);
 
 private slots:
-    void on_listWidgetMethods_itemClicked(QListWidgetItem *pItem);
     void on_listWidgetMethods_currentItemChanged(QListWidgetItem *pCurrent, QListWidgetItem *pPrevious);
     void on_comboBoxXORmethod_currentIndexChanged(int nIndex);
     void on_pushButtonXOR_clicked();
@@ -74,6 +89,21 @@ private slots:
     void on_pushButtonSUB_clicked();
     void on_pushButtonBase64Encode_clicked();
     void on_pushButtonBase64Decode_clicked();
+    void on_pushButtonROL_clicked();
+    void on_pushButtonROR_clicked();
+    void on_pushButtonNOT_clicked();
+    void on_pushButtonBSWAP_clicked();
+    void on_pushButtonReverse_clicked();
+    void on_pushButtonHexEncode_clicked();
+    void on_pushButtonHexDecode_clicked();
+    void on_pushButtonKEY_clicked();
+    void on_pushButtonBITOPS_clicked();
+    void on_pushButtonSHL_clicked();
+    void on_pushButtonSHR_clicked();
+    void on_pushButtonTEXT_clicked();
+    void on_pushButtonEncEncode_clicked();
+    void on_pushButtonEncDecode_clicked();
+    void on_pushButtonDecompress_clicked();
     void on_pushButtonDumpInput_clicked();
     void on_pushButtonDumpOutput_clicked();
 
@@ -81,6 +111,7 @@ private:
     void _addMethod(const QString &sName, CMETHOD method);
     void showMethod(CMETHOD method);
     void process(CMETHOD method, XDataConvertor::CMETHOD methodConvertor, const XDataConvertor::OPTIONS &options);
+    void processDecompress(CMETHOD method, XBinary::HANDLE_METHOD handleMethod);
 
 protected:
     virtual void registerShortcuts(bool bState);

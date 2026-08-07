@@ -5,10 +5,12 @@ DEPENDPATH += $$PWD
 
 HEADERS += \
     $$PWD/dialogxdataconvertor.h \
+    $$PWD/xdataconvertordecompress.h \
     $$PWD/xdataconvertorwidget.h
 
 SOURCES += \
     $$PWD/dialogxdataconvertor.cpp \
+    $$PWD/xdataconvertordecompress.cpp \
     $$PWD/xdataconvertorwidget.cpp
 
 FORMS += \
@@ -18,6 +20,11 @@ FORMS += \
 !contains(XCONFIG, xdataconvertor) {
     XCONFIG += xdataconvertor
     include($$PWD/../Formats/xdataconvertor.pri)
+}
+
+!contains(XCONFIG, xarchives) {
+    XCONFIG += xarchives
+    include($$PWD/../XArchive/xarchives.pri)
 }
 
 DISTFILES += \
