@@ -61,6 +61,9 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : XShortcutsWidget(
     _addMethod(QString("Text"), CMETHOD_TEXT);
     _addMethod(QString("Encodings"), CMETHOD_ENCODING);
     _addMethod(QString("Decompress"), CMETHOD_DECOMPRESS);
+    _addMethod(QString("Cipher"), CMETHOD_CIPHER);
+    _addMethod(QString("Filter"), CMETHOD_FILTER);
+    _addMethod(QString("Charset"), CMETHOD_CHARSET);
 
     XOptions::adjustListWidgetSize(ui->listWidgetMethods);
 
@@ -174,9 +177,11 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : XShortcutsWidget(
 
         ui->comboBoxENCODINGformat->addItem("Base64 URL", XDataConvertor::CMETHOD_BASE64URL_ENCODE);
         ui->comboBoxENCODINGformat->addItem("Base32", XDataConvertor::CMETHOD_BASE32_ENCODE);
+        ui->comboBoxENCODINGformat->addItem("Base58", XDataConvertor::CMETHOD_BASE58_ENCODE);
         ui->comboBoxENCODINGformat->addItem("Ascii85", XDataConvertor::CMETHOD_ASCII85_ENCODE);
         ui->comboBoxENCODINGformat->addItem("URL", XDataConvertor::CMETHOD_URL_ENCODE);
         ui->comboBoxENCODINGformat->addItem("Quoted-printable", XDataConvertor::CMETHOD_QP_ENCODE);
+        ui->comboBoxENCODINGformat->addItem("UUencode", XDataConvertor::CMETHOD_UU_ENCODE);
 
         ui->comboBoxENCODINGformat->blockSignals(false);
     }
@@ -199,6 +204,40 @@ XDataConvertorWidget::XDataConvertorWidget(QWidget *pParent) : XShortcutsWidget(
         ui->comboBoxDECOMPRESSformat->addItem("x86 BCJ", XBinary::HANDLE_METHOD_BCJ);
 
         ui->comboBoxDECOMPRESSformat->blockSignals(false);
+    }
+    {
+        // Cipher family: combo carries the engine method, key line-edit holds a hex key.
+        ui->comboBoxCIPHERop->blockSignals(true);
+
+        ui->comboBoxCIPHERop->addItem("RC4", XDataConvertor::CMETHOD_RC4);
+
+        ui->comboBoxCIPHERop->blockSignals(false);
+    }
+    {
+        // Filter family: combo carries the "encode" method (decode = encode + 1); the
+        // distance line-edit holds the byte distance.
+        ui->comboBoxFILTERop->blockSignals(true);
+
+        ui->comboBoxFILTERop->addItem("Delta", XDataConvertor::CMETHOD_DELTA_ENCODE);
+        ui->comboBoxFILTERop->addItem("XOR prev", XDataConvertor::CMETHOD_XORPREV_ENCODE);
+
+        ui->lineEditFILTERdist->setValidatorModeValue(XLineEditValidator::MODE_HEX_32, 1);
+
+        ui->comboBoxFILTERop->blockSignals(false);
+    }
+    {
+        ui->comboBoxCHARSETop->blockSignals(true);
+
+        ui->comboBoxCHARSETop->addItem("Uppercase", XDataConvertor::CMETHOD_UPPERCASE);
+        ui->comboBoxCHARSETop->addItem("Lowercase", XDataConvertor::CMETHOD_LOWERCASE);
+        ui->comboBoxCHARSETop->addItem("Swap case", XDataConvertor::CMETHOD_SWAPCASE);
+        ui->comboBoxCHARSETop->addItem("Atbash", XDataConvertor::CMETHOD_ATBASH);
+        ui->comboBoxCHARSETop->addItem("ROT5", XDataConvertor::CMETHOD_ROT5);
+        ui->comboBoxCHARSETop->addItem("ROT18", XDataConvertor::CMETHOD_ROT18);
+        ui->comboBoxCHARSETop->addItem("EBCDIC -> ASCII", XDataConvertor::CMETHOD_EBCDIC_TO_ASCII);
+        ui->comboBoxCHARSETop->addItem("ASCII -> EBCDIC", XDataConvertor::CMETHOD_ASCII_TO_EBCDIC);
+
+        ui->comboBoxCHARSETop->blockSignals(false);
     }
 }
 
@@ -320,6 +359,12 @@ void XDataConvertorWidget::showMethod(CMETHOD method)
         ui->stackedWidgetOptions->setCurrentWidget(ui->pageENCODING);
     } else if (method == CMETHOD_DECOMPRESS) {
         ui->stackedWidgetOptions->setCurrentWidget(ui->pageDECOMPRESS);
+    } else if (method == CMETHOD_CIPHER) {
+        ui->stackedWidgetOptions->setCurrentWidget(ui->pageCIPHER);
+    } else if (method == CMETHOD_FILTER) {
+        ui->stackedWidgetOptions->setCurrentWidget(ui->pageFILTER);
+    } else if (method == CMETHOD_CHARSET) {
+        ui->stackedWidgetOptions->setCurrentWidget(ui->pageCHARSET);
     }
 }
 
@@ -708,6 +753,45 @@ void XDataConvertorWidget::on_pushButtonDecompress_clicked()
     XBinary::HANDLE_METHOD handleMethod = (XBinary::HANDLE_METHOD)(ui->comboBoxDECOMPRESSformat->currentData(Qt::UserRole).toInt());
 
     processDecompress(CMETHOD_DECOMPRESS, handleMethod);
+}
+
+void XDataConvertorWidget::on_pushButtonCIPHER_clicked()
+{
+    XDataConvertor::CMETHOD methodConvertor = (XDataConvertor::CMETHOD)(ui->comboBoxCIPHERop->currentData(Qt::UserRole).toInt());
+
+    XDataConvertor::OPTIONS options = {};
+    options.baKey = QByteArray::fromHex(ui->lineEditCIPHERkey->text().toLatin1());
+
+    process(CMETHOD_CIPHER, methodConvertor, options);
+}
+
+void XDataConvertorWidget::on_pushButtonFilterEncode_clicked()
+{
+    XDataConvertor::CMETHOD methodConvertor = (XDataConvertor::CMETHOD)(ui->comboBoxFILTERop->currentData(Qt::UserRole).toInt());
+
+    XDataConvertor::OPTIONS options = {};
+    options.varKey = ui->lineEditFILTERdist->getValue_uint32();
+
+    process(CMETHOD_FILTER, methodConvertor, options);
+}
+
+void XDataConvertorWidget::on_pushButtonFilterDecode_clicked()
+{
+    // The combo carries the encode method; decode is the adjacent enum value.
+    XDataConvertor::CMETHOD methodConvertor = (XDataConvertor::CMETHOD)(ui->comboBoxFILTERop->currentData(Qt::UserRole).toInt() + 1);
+
+    XDataConvertor::OPTIONS options = {};
+    options.varKey = ui->lineEditFILTERdist->getValue_uint32();
+
+    process(CMETHOD_FILTER, methodConvertor, options);
+}
+
+void XDataConvertorWidget::on_pushButtonCHARSET_clicked()
+{
+    XDataConvertor::CMETHOD methodConvertor = (XDataConvertor::CMETHOD)(ui->comboBoxCHARSETop->currentData(Qt::UserRole).toInt());
+
+    XDataConvertor::OPTIONS options = {};
+    process(CMETHOD_CHARSET, methodConvertor, options);
 }
 
 void XDataConvertorWidget::on_pushButtonDumpInput_clicked()

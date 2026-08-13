@@ -54,6 +54,9 @@ class XDataConvertorWidget : public XShortcutsWidget {
         CMETHOD_TEXT,
         CMETHOD_ENCODING,
         CMETHOD_DECOMPRESS,
+        CMETHOD_CIPHER,
+        CMETHOD_FILTER,
+        CMETHOD_CHARSET,
     };
 
     enum SM {
@@ -104,6 +107,10 @@ private slots:
     void on_pushButtonEncEncode_clicked();
     void on_pushButtonEncDecode_clicked();
     void on_pushButtonDecompress_clicked();
+    void on_pushButtonCIPHER_clicked();
+    void on_pushButtonFilterEncode_clicked();
+    void on_pushButtonFilterDecode_clicked();
+    void on_pushButtonCHARSET_clicked();
     void on_pushButtonDumpInput_clicked();
     void on_pushButtonDumpOutput_clicked();
 
